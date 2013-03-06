@@ -1,8 +1,10 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
 	<title>WAH - Wicked Awesome History</title>
 	<script type="text/javascript">
 	function setAnswer() {
+		//initializes the question by storing the correct answer spot, makes the story hidden, then stores the story
 		window.correctAnswer=document.getElementById('correct');
 		window.correctAnswer.id="";
 		window.story=document.getElementById('story').innerHTML;
@@ -12,6 +14,7 @@
 		document.getElementById('continueGame').style.display="none";
 	}
 	function checkAnswer(answer) {
+		//checks if the player chose the correct answer, and sets the result accordingly
 		if(window.correctAnswer.checked)
 		{
 			document.getElementById('result').innerHTML="Congratulations, you got the answer correct!";
@@ -22,14 +25,16 @@
 			document.getElementById('result').innerHTML="Incorrect, read the following story and learn some damn history:";
 			window.correct=false;
 		}
+		
+		//sets the story, and makes it visible, as well as the results
 		document.getElementById('story').innerHTML=window.story;
 		document.getElementById('story').style.display="block";
 		document.getElementById('result').style.display="block";
 		document.getElementById('continueGame').style.display="block";
 		document.getElementById("questionForm").style.display="none";
-		//window.parent.document.getElementById('lightbox-container').className='';
 	}
 	function exit() {
+		//when you click to exit, it will close the lightbox, set the current answer, and go to the next turn
 		window.parent.document.getElementById('lightbox-container').className='';
 		window.parent.questionCorrect=window.correct;
 		if(!window.correct)
@@ -48,13 +53,12 @@
 	<body onload="setAnswer();">
 
 	<?php
-		$con=mysql_connect("db.csh.rit.edu","hilton","[database_password]"); 
-		mysql_select_db("hilton_boardgame", $con);
+		include("database.php");
+		$con=connect();
 		
 		$categoryId=$_POST['category_id'];
-		$tableNames=mysql_query("SELECT category_table_name FROM question_categories");
-		//echo $tableNames;
-		mysql_data_seek($tableNames,$categoryId);
+		$tableNames=mysql_query("SELECT category_table_name FROM question_categories WHERE `id`='" . $categoryId . "'");
+		
 		$tableName = mysql_fetch_row($tableNames);
 		$questionsData=mysql_query("SELECT * FROM " . $tableName[0]);
 		$questionData=null;
@@ -83,14 +87,19 @@
 		$placed=false;
 		echo '<h4>' . $questionData['question'] . '</h4>';
 		echo '<form id="questionForm">';
-		for($i=0; $i<count($wrongAnswers); $i++)
+		$position=0;
+		while(count($wrongAnswers)>0)
 		{
-			if($i==$correctPosition)
+			if($position==$correctPosition)
 			{
 				echo '<label><input id="correct" type="radio" name="answers" value="' . $correctAnswer .'" >' . $correctAnswer . '</label><br>';
 				$placed=true;
 			}
-			echo '<label><input type="radio" name="answers" value="' . $wrongAnswers[$i] .'" >' . $wrongAnswers[$i] . '</label><br>';
+			$choice=rand(0,count($wrongAnswers)-1);
+			echo '<label><input type="radio" name="answers" value="' . $wrongAnswers[$choice] .'" >' . $wrongAnswers[$choice] . '</label><br>';
+			unset($wrongAnswers[$choice]);
+			$position+=1;
+			$wrongAnswers=array_values($wrongAnswers);
 		}
 		if(!$placed)
 		{

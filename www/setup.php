@@ -1,10 +1,17 @@
-<html>
+<?php include("login.php"); ?>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <title>WAH - Wicked Awesome History</title>
 <link rel="stylesheet" type="text/css" href="styles.css">
 <script type="text/javascript">
 	function checkForm() {
+		//checks if at least two categories are selected
+		
+		//gets all of the categories
 		var categories = document.getElementsByName('selectedCategories[]');
+		
+		//gets all of the categories that are checked
 		var checkedCategories=0;
 		for(var i = 0; i< categories.length; i++)
 			if(categories[i].checked)
@@ -20,26 +27,16 @@
 </script>
 </head>
 <body>
-	<div class="header">
-    	<div class="branding">
-            <h2 class="subtitle">Wicked Awesome History</h2>
-            <h1 class="title">WAH</h1>
-        </div>
-        <div class="menu">
-        	<ul>
-            	<li><a href="setup.php">Start Game</a></li>
-            	<li><a href="question_submission.php">Submit a Question</a></li>
-            	<li><a href="about.html">About WAH</a></li>
-            </ul>
-        </div>
-    </div>
+	<?php include("header.php"); ?>
     <div class="content">
         <form id="gameForm" onsubmit="return checkForm()" action="game.php" method="post" name="setup_game">
 			<p>Select a number of categories for your game:</p>
             <?php
-                $con=mysql_connect("db.csh.rit.edu","hilton","[database_password]"); 
+                $con=mysql_connect("db.csh.rit.edu","hilton","fiefdom1{stiffen"); 
                 mysql_select_db("hilton_boardgame", $con);
                 $rows = mysql_query("SELECT * FROM question_categories");
+				
+				//Gets all of the categories, and allows them to be selected
                 while($row = mysql_fetch_array($rows))
                 {
                     echo '<input type="checkbox" name="selectedCategories[]" value="' . $row['id'] . '">' . $row['category_name'] . "</input>\n";
@@ -62,7 +59,7 @@
         	<ul>
             	<li><a href="setup.php">Start Game</a></li>
             	<li><a href="question_submission.php">Submit a Question</a></li>
-            	<li><a href="about.html">About WAH</a></li>
+            	<li><a href="about.php">About WAH</a></li>
             </ul>
         </div>
         <div class="copyright">

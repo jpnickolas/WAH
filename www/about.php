@@ -1,22 +1,12 @@
-<html>
+<?php include("login.php"); ?>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <title>WAH - Wicked Awesome History</title>
 <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-	<div class="header">
-    	<div class="branding">
-            <h2 class="subtitle">Wicked Awesome History</h2>
-            <h1 class="title">WAH</h1>
-        </div>
-        <div class="menu">
-        	<ul>
-            	<li><a href="setup.php">Start Game</a></li>
-            	<li><a href="question_submission.php">Submit a Question</a></li>
-            	<li><a href="about.html">About WAH</a></li>
-            </ul>
-        </div>
-    </div>
+	<?php include("header.php"); ?>
     <div class="content">
         <h3>About WAH</h3>
 		<p>
@@ -42,7 +32,7 @@
         	<ul>
             	<li><a href="setup.php">Start Game</a></li>
             	<li><a href="question_submission.php">Submit a Question</a></li>
-            	<li><a href="about.html">About WAH</a></li>
+            	<li><a href="about.php">About WAH</a></li>
             </ul>
         </div>
         <div class="copyright">

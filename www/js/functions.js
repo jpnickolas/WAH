@@ -138,18 +138,40 @@ function populateBoard(table, rings) {
 		var rowSpot = board[i].prev;
 		var nextRowSpot = board[i+1];
 		var ringLength = listLength(board[i+1],board[i+1]);
+		var positionId=" west";
 		for(var j=0; j<ringLength; j++)
 		{
 			//handles corners
 			if(j%(ringLength/4)==0)
 			{
 				rowSpot.advance = nextRowSpot
+				rowSpot.val.className+=positionId;
 				rowSpot=rowSpot.next;
-				rowSpot.advance = nextRowSpot
+				rowSpot.val.className+=positionId;
+				rowSpot.advance = nextRowSpot;
+				switch(j*4/ringLength) {
+					case 0:
+						positionId=" north";
+						rowSpot.val.className+=positionId;
+						break;
+					case 1:
+						positionId=" east";
+						rowSpot.val.className+=positionId;
+						break;
+					case 2:
+						positionId=" south";
+						rowSpot.val.className+=positionId;
+						break;
+					case 3:
+						positionId=" west";
+						rowSpot.val.className+=positionId;
+						break;
+				}
 				rowSpot=rowSpot.next;
 			}
 			
 			//points towards the center
+			rowSpot.val.className+=positionId;
 			rowSpot.advance = nextRowSpot
 			rowSpot=rowSpot.next;
 			nextRowSpot=nextRowSpot.next;
@@ -158,11 +180,37 @@ function populateBoard(table, rings) {
 	
 	//has the center row point to the final question
 	var rowSpot = board[board.length-1];
+	var ringLength = listLength(rowSpot,rowSpot);
 	var currSpot = rowSpot;
 	window.middle = table.getElementsByClassName("finalQuestion")[0];
+	var j=0;
+	var positionId=" west";
 	do {
+		currSpot.val.className+=positionId;
+		if(j%(ringLength/4)==0)
+		{
+			switch(j*4/ringLength) {
+				case 0:
+					positionId=" north";
+					currSpot.val.className+=positionId;
+					break;
+				case 1:
+					positionId=" east";
+					currSpot.val.className+=positionId;
+					break;
+				case 2:
+					positionId=" south";
+					currSpot.val.className+=positionId;
+					break;
+				case 3:
+					positionId=" west";
+					currSpot.val.className+=positionId;
+					break;
+			}
+		}
 		currSpot.advance = middle
 		currSpot = currSpot.next;
+		j++;
 	}while(currSpot!=rowSpot);
 	return board[0];
 }
@@ -194,7 +242,7 @@ function initialize(table,rings,dbCategoryIds,dbCategories,players)
 	for(var i=0; i<players; i++)
 	{
 		window.player[i] = firstNode;
-		window.player[i].val.childNodes[1].innerHTML += "Player "+(i+1)+" ";
+		window.player[i].val.childNodes[1].innerHTML += "<span id='player-"+(i+1)+"'>&nbsp</span>";
 	}
 	
 	//initializes a few basic values
@@ -215,27 +263,27 @@ function initialize(table,rings,dbCategoryIds,dbCategories,players)
 }
 function nextNodes() {
 	var nodePlayers = window.player[window.currentPlayer].val.childNodes[1].innerHTML;
-	window.player[window.currentPlayer].val.childNodes[1].innerHTML = nodePlayers.replace("Player "+(window.currentPlayer+1)+" ","");
+	window.player[window.currentPlayer].val.childNodes[1].innerHTML = nodePlayers.replace('<span id="player-'+(window.currentPlayer+1)+'">&nbsp;</span>',"");
 	window.player[window.currentPlayer]=window.player[window.currentPlayer].next;
-	window.player[window.currentPlayer].val.childNodes[1].innerHTML += "Player "+(window.currentPlayer+1)+" ";
+	window.player[window.currentPlayer].val.childNodes[1].innerHTML += "<span id='player-"+(window.currentPlayer+1)+"'>&nbsp;</span>";
 }
 function prevNodes() {
 	var nodePlayers = window.player[window.currentPlayer].val.childNodes[1].innerHTML;
-	window.player[window.currentPlayer].val.childNodes[1].innerHTML = nodePlayers.replace("Player "+(window.currentPlayer+1)+" ","");
+	window.player[window.currentPlayer].val.childNodes[1].innerHTML = nodePlayers.replace('<span id="player-'+(window.currentPlayer+1)+'">&nbsp;</span>',"");
 	window.player[window.currentPlayer]=window.player[window.currentPlayer].prev;
-	window.player[window.currentPlayer].val.childNodes[1].innerHTML += "Player "+(window.currentPlayer+1)+" ";
+	window.player[window.currentPlayer].val.childNodes[1].innerHTML += "<span id='player-"+(window.currentPlayer+1)+"'>&nbsp;</span>";
 }
 function advanceNodes() {
 	/*
 	 * advances the node towards the center, and calls the win screen if the player wins
 	 */
 	var nodePlayers = window.player[window.currentPlayer].val.childNodes[1].innerHTML;
-	window.player[window.currentPlayer].val.childNodes[1].innerHTML = nodePlayers.replace("Player "+(window.currentPlayer+1)+" ","");
+	window.player[window.currentPlayer].val.childNodes[1].innerHTML = nodePlayers.replace('<span id="player-'+(window.currentPlayer+1)+'">&nbsp;</span>',"");
 	if(window.player[window.currentPlayer].advance == window.middle)
 		win();
 	else
 		window.player[window.currentPlayer]=window.player[window.currentPlayer].advance;
-	window.player[window.currentPlayer].val.childNodes[1].innerHTML += "Player "+(window.currentPlayer+1)+" ";
+	window.player[window.currentPlayer].val.childNodes[1].innerHTML += "<span id='player-"+(window.currentPlayer+1)+"'>&nbsp;</span>";
 }
 function roll() {
 	/*
@@ -266,7 +314,7 @@ function move(direction) {
 	 * Then, it will prompt the user with an appropriate quesiton
 	 */
 	var nodePlayers = window.player[window.currentPlayer].val.childNodes[1].innerHTML;
-	window.player[window.currentPlayer].val.childNodes[1].innerHTML = nodePlayers.replace("Player "+(window.currentPlayer+1)+" ","");
+	window.player[window.currentPlayer].val.childNodes[1].innerHTML = nodePlayers.replace('<span id="player-'+(window.currentPlayer+1)+'">&nbsp;</span>',"");
 	var next = getNext(window.player[window.currentPlayer],window.rollVal);
 	var prev = getPrev(window.player[window.currentPlayer],window.rollVal);
 	var moveSpots=document.getElementsByClassName("nextSpot");
@@ -280,7 +328,7 @@ function move(direction) {
 		window.player[window.currentPlayer] = next;
 	else if(direction == 'prev')
 		window.player[window.currentPlayer] = prev;
-	window.player[window.currentPlayer].val.childNodes[1].innerHTML += "Player "+(window.currentPlayer+1)+" ";
+	window.player[window.currentPlayer].val.childNodes[1].innerHTML += "<span id='player-"+(window.currentPlayer+1)+"'>&nbsp;</span>";
 	getQuestion(window.player[window.currentPlayer].val);
 }
 function populateWithQuestions() {
@@ -308,7 +356,7 @@ function getQuestion(boardPosition) {
 	 * Sets the lightbox to contain an iframe, and then posts 
 	 * to it the category of question to use
 	 */
-	document.getElementById('lightbox').innerHTML='<iframe id="magic_frame" name="magic_frame" width="100%" height="100%"></frame>';//'<div id="question">'+question+'</div>';
+	document.getElementById('lightbox').innerHTML='<iframe id="magic_frame" name="magic_frame" width="100%" height="100%"></iframe>';//'<div id="question">'+question+'</div>';
 	document.getElementById('lightbox-container').className='showing';
 	
 	document.forms["magic_form"].category_id.value=window.categoryIds[window.categories.indexOf(boardPosition.id)];
@@ -333,7 +381,8 @@ function win() {
 }
 function instructions() {
 	/*
-	 * Shows the player the instructions using the lightbox
+	 * Shows the player the instructions using the lightbox. This
+	 * is basically taken straight from the about page.
 	 */
 	document.getElementById('lightbox').innerHTML='<p style="margin:25px;">'+
 			"Wicked Awesome History (<strong>WAH</strong>) is a board game similar to <a href=\"http://boardgamegeek.com/boardgame/1362/wits-end\" target=\"blank\">Wits End</a>."+
@@ -343,7 +392,7 @@ function instructions() {
 			"next player rolls. If you answer a question correctly on an advance square (located at the center of each side of the board), then you advance closer to the center."+
 			"If you make it to the center, you win!"+
 		'</p>'+
-		'<a style="margin:0 25px;" href="#" onclick="disappear();">Click here to exit</a></p>';
+		'<a style="margin:0 25px;" onclick="disappear();">Click here to exit</a></p>';
 	document.getElementById('lightbox-container').onclick=new function() {disappear()};
 	window.parent.document.getElementById('lightbox-container').className='showing';
 }

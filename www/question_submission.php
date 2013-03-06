@@ -1,9 +1,12 @@
- <html>
- <head>
+<?php include("login.php"); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <title>WAH - Wicked Awesome History</title>
 <link rel="stylesheet" type="text/css" href="styles.css">
  <script type="text/javascript">
  function add() {
+	//adds a new wrong answer slot
 	var count=document.getElementById('wrongAnswers').children.length;
 	if(count>0)
 	{
@@ -14,6 +17,7 @@
 		document.getElementById('wrongAnswers').innerHTML='<input type="text" name="wrong_answer_'+(count/2+1)+'" id="wrong_answer_'+(count/2+1)+'" placeholder="Enter a wrong answer" /><br>';
  }
  function remove() {
+	//removes the last wrong answer slot
 	var count=document.getElementById('wrongAnswers').children.length;
 	
 	if(count>0)
@@ -26,35 +30,19 @@
 		//document.getElementById('wrongAnswers').innerHTML-='<input type="text" name="wrong_answer_'+(count)+'" id="wrong_answer_'+(count+1)+'" placeholder="Enter a wrong answer" /><br>';
  }
  function addNewCategory() {
+	//prompts the user for a new category
 	document.getElementById('newCategory').innerHTML='<input type="text" name="new_category" id="new_category" placeholder="Enter the new category" /><br>';
  }
  </script>
  </head>
  <body>
-	<div class="header">
-    	<div class="branding">
-            <h2 class="subtitle">Wicked Awesome History</h2>
-            <h1 class="title">WAH</h1>
-        </div>
-        <div class="menu">
-        	<ul>
-            	<li><a href="setup.php">Start Game</a></li>
-            	<li><a href="question_submission.php">Submit a Question</a></li>
-            	<li><a href="about.html">About WAH</a></li>
-            </ul>
-        </div>
-    </div>
+	<?php include("header.php"); ?>
     <div class="content">
 	<form name="question_form" id="submit-question-form" action="add_question.php" method="post">
 		<select name="category">
 			<option value="" selected>--Select Category--</option>
 			<?php
-				$con=mysql_connect("db.csh.rit.edu","hilton","[database_password]"); 
-				if(!$con)
-				{
-					echo "NO!";
-				}
-				mysql_select_db("hilton_boardgame", $con);
+				$con=connect();
 				$rows = mysql_query("SELECT * FROM question_categories");
 				while($row = mysql_fetch_array($rows))
 				{
@@ -82,7 +70,7 @@
         	<ul>
             	<li><a href="setup.php">Start Game</a></li>
             	<li><a href="question_submission.php">Submit a Question</a></li>
-            	<li><a href="about.html">About WAH</a></li>
+            	<li><a href="about.php">About WAH</a></li>
             </ul>
         </div>
         <div class="copyright">

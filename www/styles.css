@@ -1,5 +1,5 @@
 a {
-	color:ffc473;
+	color:#ffc473;
 	text-decoration:none;
 	cursor:pointer;
 }
@@ -7,7 +7,7 @@ a:hover {
 	color:#ff9400;
 }
 body {
-	background:#e0e0e0;/*#f0c790;*/
+	background:#e0e0e0;
 	
 }
 .header {
@@ -43,7 +43,7 @@ body {
 	padding-bottom:15px;
 }
 .branding {
-	width:300px;
+	width:270px;
 	float:left;
 	clear:left;
 	padding:0 25px;
@@ -58,7 +58,7 @@ body {
 }
 .menu {
 	clear:right;
-	width:500px;
+	width:680px;
 	float:right;
 	overflow:hidden;
 	margin-top:9px;
@@ -114,17 +114,41 @@ body {
 	clear:both;
 	text-align:center;
 }
+table {
+	border-spacing:0;
+}
 td {
-	border:1px #000 solid; 
+	border:0px #fff solid; 
 	padding:0;
 	margin:0;
-	width:120px; 
+	width:100px; 
 	height:60px;
 	background-image:url('images/gradient.png');
+	background-size:100% 100%;
 	background-repeat: no-repeat;
 	text-align:center;
 	font-size:12px;
 } 
+.north{
+	border-top:10px #fff solid;
+	background-position:right bottom,right bottom;
+	height:50px
+}
+.south{
+	border-bottom:10px #fff solid;
+	background-position:right bottom,left bottom;
+	height:50px
+}
+.east{
+	border-right:10px #fff solid;
+	background-position:right bottom,right top;
+	width:90px;
+}
+.west {
+	border-left:10px #fff solid;
+	background-position:right bottom,left top;
+	width:90px;
+}
 .finalQuestion{
 	background:#f0c790;
 	background-image:none;
@@ -197,6 +221,8 @@ iframe {
 }
 .advanceSpot {
 	background-color:#fff !important;
+	background-image:url('images/gradient.png'),url('images/arrows.png');
+	background-size:100% 100%,200% 200%
 }
 .playerContainer {
 	color:#0000bc;
@@ -220,4 +246,49 @@ a#instructions,#lightbox a {
 }
 a#instructions:hover,#lightbox a:hover{
 	color:#ffc473;
+}
+#login-form input{
+	float:left;
+	clear:none;
+	height:20px;
+	width:50px;
+}
+#player-1,#player-2,#player-3,#player-4 {
+	display:block;
+	height:10px;
+	width:10px;
+	border:3px #000 solid;
+	border-radius:10px;
+	float:left;
+	margin-left:5px;
+}
+p #player-1,p #player-2,p #player-3,p #player-4 {
+	float:none;
+	display:inline-block;
+	margin-right:15px;
+	line-height:10px;
+}
+#login-form input {
+	margin:3px 5px 0px 5px;
+	width:70px;
+}
+#login-form input[type="submit"] {
+	width:50px;
+	height:26px;
+	padding-bottom:5px;
+	padding-top:0;
+}
+.sidebar {
+	width:200px;
+	float:left;
+	clear:left;
+}
+.admin-content {
+	width:750px;
+	float:right;
+	clear:right;
+}
+#edit-frame {
+	height:500px;
+	width:750px;
 }
